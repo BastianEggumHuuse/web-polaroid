@@ -1,0 +1,25 @@
+#basic_container {
+	margin:10px;
+	float:left;
+}
+
+#camera {
+	width:648px;
+	display: inline-block;
+}
+
+button {
+	margin:4px;
+	padding:4px;
+	border:1px solid black;
+}
+
+#viewfinder {
+	border:1px solid black;
+	margin:4px;
+}
+
+#snapshot {
+	border:1px solid black;
+	margin:4px;
+}

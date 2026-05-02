@@ -2,20 +2,24 @@ let viewfinder = document.getElementById("viewfinder")
 let snapshot = document.getElementById("snapshot")
 
 async function camera_init() {
+	// Declare video stream
 	let stream = null
+
 	try {
+		// Get video stream from the navigator
 		stream = await navigator.mediaDevices.getUserMedia({video:true, audio:false});
+
+		// Link video stream to the viewfinder, and play stream
 		viewfinder.srcObject = stream;
 		viewfinder.play();
 	} catch(error) {
 		document.getElementById("header").innerHTML = "Error starting camera..";
 	}
-
-	document.getElementById("header").innerHTML = "Camera started";
 }
 
-
 async function camera_shutter() {
+
+	// Draw the image currently in the viewfinder onto the canvas
 	var context = snapshot.getContext("2d");
 	context.drawImage(viewfinder,0,0,640,480);
 

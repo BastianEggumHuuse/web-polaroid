@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 
 <head>
+	<link rel="stylesheet" href="front_end/main.css">
 
-	<div style = "height = 100px;">
-		<h1 id ="header">Web polaroid!!</h1>
-	</div>
+	<h1 id ="header">Web polaroid</h1>
 </head>
 
 <body>
+	<div style = "width:1650px; height:550px;">
+		<div id = "basic_container" style= "width:300px;">
+			<p>The web polaroid is a service that allows you to take instant photos that are sent to our server. You only get a limited amount of photos, so make sure it's worth it!</p>
+			<p>This is the desktop variant, the mobile variant is currently under development</p>
+		</div>
 
-	<!-- Viewfinder -->	
-	<video style="border:1px solid black;" id = "viewfinder"></video>
+		<div id = "camera">
+			<!-- Viewfinder -->	
+			<video id = "viewfinder" width="640px" height="480px"></video>
+			<!-- Button to start video -->
+			<button type="button" onclick="camera_init()">Start camera</button>
+		</div>
 
-	<!-- Button to start video -->
-	<button type="button" onclick="camera_init()">Start camera</button>
+		<div id = "camera">
+			<!-- snapshot -->
+			<canvas id="snapshot" width="640px" height="480px"></canvas>
 
-	<!-- snapshot -->
-	<canvas style="border:1px solid black;" id="snapshot" width="640px" height="480px"></canvas>
-
-	<!-- shutter  -->
-	<button type="button" onclick="camera_shutter()">Snap!</button>
-	<script src="main.js"></script>
+			<!-- shutter  -->
+			<button type="button" onclick="camera_shutter()">Snap!</button>
+		</div>
+	</div>
+	<!-- scripts -->
+	<script src="back_end/camera.js"></script>
 </body>
