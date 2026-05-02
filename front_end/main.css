@@ -14,12 +14,12 @@ button {
 	border:1px solid black;
 }
 
-#viewfinder {
+.viewfinder {
 	border:1px solid black;
 	margin:4px;
 }
 
-#snapshot {
+.snapshot {
 	border:1px solid black;
 	margin:4px;
 }

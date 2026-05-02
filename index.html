@@ -11,21 +11,37 @@
 		<div id = "basic_container" style= "width:300px;">
 			<p>The web polaroid is a service that allows you to take instant photos that are sent to our server. You only get a limited amount of photos, so make sure it's worth it!</p>
 			<p>This is the desktop variant, the mobile variant is currently under development</p>
+
+			<!-- Button to start video -->
+			<button type="button" onclick="camera_init()">Start camera</button>
+
+			<!-- shutter  -->
+			<button type="button" onclick="camera_shutter()">Snap!</button>
 		</div>
 
 		<div id = "camera">
-			<!-- Viewfinder -->	
-			<video id = "viewfinder" width="640px" height="480px"></video>
-			<!-- Button to start video -->
-			<button type="button" onclick="camera_init()">Start camera</button>
+			<!-- Viewfinder -->
+			<video class="viewfinder" id = "viewfinder_user" width="640px" height="480px"></video>
+		</div>
+
+		<div id = "camera">
+			<!-- Viewfinder -->
+			<video class="viewfinder" id = "viewfinder_environment" width="640px" height="480px"></video>
+		</div>
+
+
+		<div id = "basic_container" style= "width:300px;">
+
 		</div>
 
 		<div id = "camera">
 			<!-- snapshot -->
-			<canvas id="snapshot" width="640px" height="480px"></canvas>
+			<canvas class="snapshot" id="snapshot_user" width="640px" height="480px"></canvas>
+		</div>
 
-			<!-- shutter  -->
-			<button type="button" onclick="camera_shutter()">Snap!</button>
+		<div id = "camera">
+			<!-- snapshot -->
+			<canvas class="snapshot" id="snapshot_environment" width="640px" height="480px"></canvas>
 		</div>
 	</div>
 	<!-- scripts -->
