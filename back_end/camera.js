@@ -45,11 +45,11 @@ async function camera_shutter() {
 
 	// Draw the image currently in the viewfinder onto the canvas
 	var context = snapshot_e.getContext("2d");
-	context.drawImage(viewfinder_e,0,0,640,480);
+	context.drawImage(viewfinder_e,0,0,486,648);
 	var context = snapshot_u.getContext("2d");
-	context.drawImage(viewfinder_e,0,0,640,480);
+	context.drawImage(viewfinder_u,0,0,486,648);
 
-	save_image();
+	//save_image();
 }
 
 async function sendPhotoToPC(dataUrl) {
@@ -69,6 +69,26 @@ async function sendPhotoToPC(dataUrl) {
 function save_image() {
 	const dataUrl = snapshot_e.toDataURL('image/jpeg', 0.9);
 	sendPhotoToPC(dataUrl);
+}
+
+//swaping camera
+let Frontcam = True
+
+function swap_cam() {
+	const user = document.getElementById("viewfinder_user");
+  	const env = document.getElementById("viewfinder_environment");
+
+	if (user.style.zIndex ==2){
+		user.style.zIndex = 1;
+    	env.style.zIndex = 2;
+		Frontcam = True 
+	} else {
+		user.style.zIndex = 2;
+    	env.style.zIndex = 1;
+		Frontcam = True 
+	}
+	
+
 }
 
 // Zooming functionality

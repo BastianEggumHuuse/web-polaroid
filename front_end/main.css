@@ -1,21 +1,29 @@
 #basic_container {
-	margin:10px;
-	float:left;
+	float: none;      /* stop floating — stack vertically */
+	width: 100%;
 }
+
 
 .stage {
 	border:1px solid black;
-	width:648px;
-	margin:2px;
-	position:relative;
-	display: inline-block;
-	overflow:hidden;
+    width: 95vw;      /* nearly full screen width */
+    height: 127vw;    /* keeps the same 3:4 ratio as 486x648 */
+    display: block;   /* stack instead of inline */
+    margin: 4px auto;
+	position: relative;
+	overflow: hidden;
 }
 
-.viewfinder {
+
+.viewfinder{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	object-fit: cover; 
+	z-index: 1;
 }
 
-.snapshot {
+.snapshot{
 }
 
 button {
