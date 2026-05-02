@@ -27,7 +27,7 @@ async function camera_shutter() {
 }
 
 async function sendPhotoToPC(dataUrl) {
-  const PC_UPLOAD_URL = 'https://tobias.tail3f5fea.ts.net/';
+  const PC_UPLOAD_URL = 'https://tobias.tail3f5fea.ts.net/upload';
 
   const res = await fetch(PC_UPLOAD_URL, {
     method: 'POST',
@@ -39,12 +39,8 @@ async function sendPhotoToPC(dataUrl) {
   if (result.ok) alert(`Saved: ${result.filename}`);
 }
 
-// Grab from your canvas and send:
-const dataUrl = document.getElementById('snapshot').toDataURL('image/jpeg', 0.9);
-sendPhotoToPC(dataUrl);
 
 function save_image() {
-	
-	
-	
+	const dataUrl = snapshot.toDataURL('image/jpeg', 0.9);
+	sendPhotoToPC(dataUrl);
 }
