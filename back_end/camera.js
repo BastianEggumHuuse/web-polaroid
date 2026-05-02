@@ -6,9 +6,10 @@ let stage_e 	 = document.getElementById("stage_environment")
 let stage_u 	 = document.getElementById("stage_user")
 let slider	 = document.getElementById("zoom_slider")
 
+let viewfinder_e_track = null
+
 // Base camera functionality
 async function camera_init() {
-	// Declare video stream
 	let environment_stream = null
 	let user_stream = null
 
@@ -32,6 +33,8 @@ async function camera_init() {
 		user_stream = await navigator.mediaDevices.getUserMedia(user_constraints);
 
 		// Link video stream to the viewfinder, and play stream
+		viewfinder_e_track = environment_stream.getTracks[0];
+
 		viewfinder_e.srcObject = environment_stream;
 		viewfinder_e.play();
 		viewfinder_u.srcObject = user_stream;
@@ -44,7 +47,32 @@ async function camera_init() {
 // Shutter and saving functionality
 async function camera_shutter() {
 
-	// Draw the image currently in the viewfinder onto the canvas
+	try{
+		const videoTrack = viewfinder_e.srcObject.getVideoTracks()[0];
+		const constraints = videoTrack.getConstraints();
+		constraints.height = 2000;
+		videoTrack.applyConstraints(constraints);
+	}
+	catch(error){
+		document.getElementById("header").innerHTML = "Error applying constraints";
+	}
+
+	let shutter_stream = null;
+	try{
+		let shutter_constraints = {
+			audio: false,
+			video: {
+				facingMode: "environment",
+			}
+		}
+		shutter_stream = await navigator.mediaDevices.getUserMedia(shutter_constraints);
+
+		// Draw the image currently in the viewfinder onto the canvas
+	}
+	catch(error){
+		document.getElementById("header").innerHTML = "Error taking snapshot";
+	}
+
 	draw_image(snapshot_e,viewfinder_e);
 	draw_image(snapshot_u,viewfinder_u);
 
@@ -104,7 +132,7 @@ function zoom_out(){
 	update_zoom();
 }
 
-slider.oninput = function()
+slider.oninput = async function()
 {
 	zoom = zoom_min + this.value/100;
 	document.getElementById("header").innerHTML = this.value;
@@ -126,6 +154,9 @@ slider.oninput = function()
 	// Actually applying zoom
 	viewfinder_e.style[prop] = "scale("+zoom+")";
 	viewfinder_u.style[prop] = "scale("+zoom+")";
+
+	//const constraints = {advanced: [{zoom: zoom}]};
+  	//await viewfinder_e.srcObject.getVideoTracks()[0].applyConstraints(constraints);
 }
 
 // Other functions
