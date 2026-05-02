@@ -17,29 +17,29 @@
 
 			<!-- shutter  -->
 			<button type="button" onclick="camera_shutter()">Snap!</button>
+
+			<button type="button" onclick="zoom_in()">+</button>
+			<button type="button" onclick="zoom_out()">-</button>
 		</div>
 
-		<div id = "camera">
+		<div class="stage" id = "stage_user">
 			<!-- Viewfinder -->
 			<video class="viewfinder" id = "viewfinder_user" width="640px" height="480px"></video>
 		</div>
 
-		<div id = "camera">
+		<div class="stage" id = "stage_environment">
 			<!-- Viewfinder -->
 			<video class="viewfinder" id = "viewfinder_environment" width="640px" height="480px"></video>
 		</div>
 
+		<div id = "basic_container" style= "width:300px;"></div>
 
-		<div id = "basic_container" style= "width:300px;">
-
-		</div>
-
-		<div id = "camera">
+		<div class="stage">
 			<!-- snapshot -->
 			<canvas class="snapshot" id="snapshot_user" width="640px" height="480px"></canvas>
 		</div>
 
-		<div id = "camera">
+		<div class="stage">
 			<!-- snapshot -->
 			<canvas class="snapshot" id="snapshot_environment" width="640px" height="480px"></canvas>
 		</div>

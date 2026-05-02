@@ -3,23 +3,23 @@
 	float:left;
 }
 
-#camera {
+.stage {
+	border:1px solid black;
 	width:648px;
+	margin:2px;
+	position:relative;
 	display: inline-block;
+	overflow:hidden;
+}
+
+.viewfinder {
+}
+
+.snapshot {
 }
 
 button {
 	margin:4px;
 	padding:4px;
 	border:1px solid black;
-}
-
-.viewfinder {
-	border:1px solid black;
-	margin:4px;
-}
-
-.snapshot {
-	border:1px solid black;
-	margin:4px;
 }
