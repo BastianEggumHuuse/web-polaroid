@@ -4,6 +4,7 @@ let snapshot_e 	 = document.getElementById("snapshot_environment")
 let snapshot_u 	 = document.getElementById("snapshot_user")
 let stage_e 	 = document.getElementById("stage_environment")
 let stage_u 	 = document.getElementById("stage_user")
+let slider	 = document.getElementById("zoom_slider")
 
 // Base camera functionality
 async function camera_init() {
@@ -103,8 +104,10 @@ function zoom_out(){
 	update_zoom();
 }
 
-function update_zoom()
+slider.oninput = function()
 {
+	zoom = zoom_min + this.value/100;
+	document.getElementById("header").innerHTML = this.value;
 	
 	// Which transform is used depends on browser 
 	var properties = ['transform', 'WebkitTransform', 'MozTransform','msTransform', 'OTransform'];
