@@ -65,12 +65,12 @@ async function camera_shutter() {
 
 	if (Frontcam == true) {
 		var context = snapshot_e.getContext("2d");
-		context.filter = "contrast(1.2) saturate(0.5) sepia(0.8) brightness(1.15) blur(0.5px)";
+		context.filter = "contrast(1.5) brightness(0.8) saturate(2.5) blur(0.5px) sepia(0.15) ";
 		context.drawImage(viewfinder_e,0,0,width_e,height_e);
 		save_image(snapshot_e);
 	} else {
 		var context = snapshot_u.getContext("2d");
-		context.filter = "contrast(1.2) saturate(0.5) sepia(0.8) brightness(1.15) blur(0.5px)";
+		context.filter = "contrast(1.5) brightness(0.8) saturate(2.5) blur(0.5px) sepia(0.15)";
 		context.drawImage(viewfinder_u,0,0,width_u,height_u);
 		save_image(snapshot_u);
 	}

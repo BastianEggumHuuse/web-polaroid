@@ -4,40 +4,24 @@
 	<link rel="stylesheet" href="front_end/main.css">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 </head>
-
 <body>
-	<h1 id ="header">Web polaroid</h1>
-	<div>
-		<div id = "basic_container" style= "width:300px;">
-			<p>The web polaroid is a service that allows you to take instant photos that are sent to our server. You only get a limited amount of photos, so make sure it's worth it!</p>
-			<p>This is the desktop variant, the mobile variant is currently under development</p>
+  <h1 id="header">Web polaroid</h1>
 
-			<!-- Button to start video -->
-			<button type="button" onclick="camera_init()">Start camera</button>
+  <div class="stage">
+    <video class="viewfinder" id="viewfinder_user"></video>
+    <video class="viewfinder" id="viewfinder_environment"></video>
+  </div>
 
-			<!-- shutter  -->
-			<button type="button" onclick="camera_shutter()">Snap!</button>
-			<button type="button" onclick="swap_cam()">Swap! </button>
-			<button type="button" onclick="zoom_in()">+</button>
-			<button type="button" onclick="zoom_out()">-</button>
-			
-		</div>
+  <div id="controls">
+    <button onclick="camera_init()">Start</button>
+    <button onclick="camera_shutter()">Snap!</button>
+    <button onclick="swap_cam()">Swap</button>
+    <button onclick="zoom_in()">+</button>
+    <button onclick="zoom_out()">-</button>
+  </div>
 
-
-		<div class="stage" id = "stage_environment">
-			<!-- Viewfinder -->
-			<video class="viewfinder" id = "viewfinder_environment" style="z-index: 2;"></video>
-			<video class="viewfinder" id = "viewfinder_user" style="z-index: 1;"></video>
-		</div>
-
-
-		<div class="stage">
-			<!-- snapshot -->
-			<canvas class="snapshot" id="snapshot_user"></canvas>
-			<canvas class="snapshot" id="snapshot_environment"></canvas>
-		</div>
-
-	</div>
-	<!-- scripts -->
-	<script src="back_end/camera.js"></script>
+  <canvas id="snapshot_user" style="display:none;"></canvas>
+  <canvas id="snapshot_environment" style="display:none;"></canvas>
+  
+  <script src="back_end/camera.js"></script>
 </body>

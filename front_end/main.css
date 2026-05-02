@@ -1,33 +1,44 @@
-#basic_container {
-	float: none;      /* stop floating — stack vertically */
-	width: 100%;
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* no scrolling */
+  background: black;
 }
-
 
 .stage {
-	border:1px solid black;
-    width: 95vw;      /* nearly full screen width */
-    height: 127vw;    /* keeps the same 3:4 ratio as 486x648 */
-    display: block;   /* stack instead of inline */
-    margin: 4px auto;
-	position: relative;
-	overflow: hidden;
+  position: fixed;  /* fills viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
-
-.viewfinder{
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	object-fit: cover; 
-	z-index: 1;
+.viewfinder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.snapshot{
+#controls {
+  position: fixed;  /* floats over everything */
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  z-index: 99;
 }
 
-button {
-	margin:4px;
-	padding:4px;
-	border:1px solid black;
+#header {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 99;
+  color: white;
+  margin: 0;
 }
