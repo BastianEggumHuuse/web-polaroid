@@ -4,12 +4,13 @@ let snapshot_e 	 = document.getElementById("snapshot_environment")
 let snapshot_u 	 = document.getElementById("snapshot_user")
 let stage_e 	 = document.getElementById("stage_environment")
 let stage_u 	 = document.getElementById("stage_user")
+let Frontcam = true
+let environment_stream = null
+let user_stream = null
 
 // Base camera functionality
 async function camera_init() {
 	// Declare video stream
-	let environment_stream = null
-	let user_stream = null
 
 	let environment_constraints = {
 		audio: false,
@@ -40,16 +41,42 @@ async function camera_init() {
 	}
 }
 
+
 // Shutter and saving functionality
 async function camera_shutter() {
+	
+
+	const track_e = environment_stream.getVideoTracks()[0];
+	const track_u = user_stream.getVideoTracks()[0];
+
+
+
+	const {width: width_u, height:height_u } = track_u.getSettings();
+	snapshot_u.width = width_u;
+	snapshot_u.height = height_u;
+	
+	const { width:width_e, height:height_e } = track_e.getSettings();
+	snapshot_e.width = width_e;
+	snapshot_e.height = height_e;
+
 
 	// Draw the image currently in the viewfinder onto the canvas
 	var context = snapshot_e.getContext("2d");
-	context.drawImage(viewfinder_e,0,0,486,648);
-	var context = snapshot_u.getContext("2d");
-	context.drawImage(viewfinder_u,0,0,486,648);
 
-	//save_image();
+	if (Frontcam == true) {
+		var context = snapshot_e.getContext("2d");
+		context.filter = "contrast(1.2) saturate(0.5) sepia(0.8) brightness(1.15) blur(0.5px)";
+		context.drawImage(viewfinder_e,0,0,width_e,height_e);
+		save_image(snapshot_e);
+	} else {
+		var context = snapshot_u.getContext("2d");
+		context.filter = "contrast(1.2) saturate(0.5) sepia(0.8) brightness(1.15) blur(0.5px)";
+		context.drawImage(viewfinder_u,0,0,width_u,height_u);
+		save_image(snapshot_u);
+	}
+
+
+	
 }
 
 async function sendPhotoToPC(dataUrl) {
@@ -66,13 +93,13 @@ async function sendPhotoToPC(dataUrl) {
 }
 
 
-function save_image() {
-	const dataUrl = snapshot_e.toDataURL('image/jpeg', 0.9);
+function save_image(snap) {
+	const dataUrl = snap.toDataURL('image/jpeg', 0.9);
 	sendPhotoToPC(dataUrl);
 }
 
 //swaping camera
-let Frontcam = True
+
 
 function swap_cam() {
 	const user = document.getElementById("viewfinder_user");
@@ -81,11 +108,11 @@ function swap_cam() {
 	if (user.style.zIndex ==2){
 		user.style.zIndex = 1;
     	env.style.zIndex = 2;
-		Frontcam = True 
+		Frontcam = true 
 	} else {
 		user.style.zIndex = 2;
     	env.style.zIndex = 1;
-		Frontcam = True 
+		Frontcam = false 
 	}
 	
 
