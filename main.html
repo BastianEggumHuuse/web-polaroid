@@ -9,11 +9,16 @@
 
 <body>
 
-	<!-- Actual imaging -->	
+	<!-- Viewfinder -->	
 	<video style="border:1px solid black;" id = "viewfinder"></video>
 
 	<!-- Button to start video -->
-	<button type="button" onclick="init_camera()">start camera</button>
-	<script src="main.js"></script>
+	<button type="button" onclick="camera_init()">Start camera</button>
 
+	<!-- snapshot -->
+	<canvas style="border:1px solid black;" id="snapshot" width="640px" height="480px"></canvas>
+
+	<!-- shutter  -->
+	<button type="button" onclick="camera_shutter()">Snap!</button>
+	<script src="main.js"></script>
 </body>
