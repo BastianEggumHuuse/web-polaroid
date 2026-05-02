@@ -44,13 +44,29 @@ async function camera_init() {
 async function camera_shutter() {
 
 	// Draw the image currently in the viewfinder onto the canvas
-	var context = snapshot_e.getContext("2d");
-	context.drawImage(viewfinder_e,0,0,640,480);
-	var context = snapshot_u.getContext("2d");
-	context.drawImage(viewfinder_e,0,0,640,480);
+	draw_image(snapshot_e,viewfinder_e);
+	draw_image(snapshot_u,viewfinder_u);
 
 	save_image();
 }
+
+let size_x = 648;
+let size_y = 486;
+function draw_image(snapshot, viewfinder){
+	var context = snapshot.getContext("2d");
+
+	let diff_x = ((size_x * zoom)-size_x)/2
+	let diff_y = ((size_y * zoom)-size_y)/2
+
+	// Drawing the zoomed image
+	context.drawImage(viewfinder,-diff_x,-diff_y,size_x * zoom,size_y * zoom);
+	// Clearing the outside of the image (unsure if this is necessary)
+	context.clearRect(-diff_x,-diff_y,2*diff_x + size_x,diff_y-1); 	// Top
+	context.clearRect(-diff_x,size_y,2*diff_x + size_x,diff_y-1); 	// Bottom
+	context.clearRect(-diff_x,0,diff_x - 1,size_y);			// Left
+	context.clearRect(size_x + 1,0,diff_x,size_y);			// Right
+}
+
 
 async function sendPhotoToPC(dataUrl) {
   const PC_UPLOAD_URL = 'https://tobias.tail3f5fea.ts.net/upload';
@@ -86,6 +102,7 @@ function zoom_out(){
 	zoom = clamp(zoom_min,zoom_max,zoom - zoom_step);
 	update_zoom();
 }
+
 function update_zoom()
 {
 	
@@ -105,6 +122,7 @@ function update_zoom()
 
 	// Actually applying zoom
 	viewfinder_e.style[prop] = "scale("+zoom+")";
+	viewfinder_u.style[prop] = "scale("+zoom+")";
 }
 
 // Other functions

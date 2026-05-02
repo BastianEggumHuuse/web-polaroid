@@ -6,6 +6,7 @@
 .stage {
 	border:1px solid black;
 	width:648px;
+	height:486px;
 	margin:2px;
 	position:relative;
 	display: inline-block;
@@ -16,6 +17,8 @@
 }
 
 .snapshot {
+	width:648px;
+	height:486px;
 }
 
 button {
