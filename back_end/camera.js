@@ -45,9 +45,9 @@ async function camera_shutter() {
 
 	// Draw the image currently in the viewfinder onto the canvas
 	var context = snapshot_e.getContext("2d");
-	context.drawImage(stage_e,0,0,640,480);
+	context.drawImage(viewfinder_e,0,0,640,480);
 	var context = snapshot_u.getContext("2d");
-	context.drawImage(stage_u,0,0,640,480);
+	context.drawImage(viewfinder_e,0,0,640,480);
 
 	save_image();
 }
@@ -67,7 +67,7 @@ async function sendPhotoToPC(dataUrl) {
 
 
 function save_image() {
-	const dataUrl = snapshot.toDataURL('image/jpeg', 0.9);
+	const dataUrl = snapshot_e.toDataURL('image/jpeg', 0.9);
 	sendPhotoToPC(dataUrl);
 }
 
