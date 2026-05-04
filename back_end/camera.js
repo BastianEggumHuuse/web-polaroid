@@ -1,48 +1,84 @@
 let viewfinder 	= document.getElementById("viewfinder_environment")
 let snapshot 	= document.getElementById("snapshot_environment")
 let stage 	= document.getElementById("stage_environment")
+let front_face 	= false
 const Zoom = document.getElementById("Zoom")
-let Frontcam = true
-let environment_stream = null
-let user_stream = null
 
-// Base camera functionality
-async function camera_init() {
-	// Declare video stream
-
-	let environment_constraints = {
+let environment_constraints = {
 		audio: false,
 		video: {
 			facingMode: "environment",
 			width: {ideal:4096},
 			height: {ideal: 2160},
 		}
-	}
+	};
 
-	let user_constraints = {
+let user_constraints = {
 		audio: false,
 		video: {
 			facingMode: "user", // for front facing mode
 			width: {ideal:4096},
 			height: {ideal: 2160},
 		}
+	};
+
+
+// --- Camera init ---
+let camera_init = false;
+async function camera_init() {
+	document.getElementById("header").innerHTML = 'init';
+	return;
+
+	set_camera_face(true);
+	camera_init = true;
+}
+
+function camera_init_2()
+{
+	document.getElementById("header").innerHTML = 'init';
+}
+window.onload = camera_init_2();
+
+// --- Loading camera face ---
+async function set_camera_face(isEnvironment)
+{
+	// Removing previous stream
+	if (camera_init){
+		// This is a bad way of doing this I think
+		viewfinder.srcObject.getVideoTracks[0].stop();
 	}
+	
+	document.getElementById("header").innerHTML = 'starting';
 
 	try {
 		// Get video stream from the navigator
-		environment_stream = await navigator.mediaDevices.getUserMedia(environment_constraints);
-		//user_stream = await navigator.mediaDevices.getUserMedia(user_constraints);
+		let stream = null;
+		if(isEnvironment){
+			stream = await navigator.mediaDevices.getUserMedia(environment_constraints);
+		} else {
+			stream = await navigator.mediaDevices.getUserMedia(user_constraints);
+		}
 
 		// Link video stream to the viewfinder, and play stream
-		viewfinder.srcObject = environment_stream;
+		viewfinder.srcObject = stream;
 		viewfinder.play();
 	} catch(error) {
+<<<<<<< HEAD
 		document.getElementById("header").innerHTML = 'Camera does not Work';;
+=======
+		document.getElementById("header").innerHTML = 'Failed to load video stream';
+>>>>>>> c129bc9 (a)
 	}
 }
-window.onload = camera_init();
 
-//Shuter flash
+// --- Switch camera face ---
+function swap_cam()
+{
+	front_face = !front_face;
+	set_camera_face(front_face);
+}
+
+// --- Trigger shutter flash ---
 function trigger_flash() {
   const flash = document.getElementById("flash");
   flash.style.opacity = "1";
@@ -58,10 +94,7 @@ function trigger_sound() {
 // Shutter and saving functionality
 async function camera_shutter() {
 	
-
-	const track = environment_stream.getVideoTracks()[0];
-
-
+	const track = viewfinder.srcObject.getVideoTracks()[0];
 
 	const {width: width, height:height } = track.getSettings();
 	snapshot.width = width;
@@ -95,23 +128,6 @@ async function sendPhotoToPC(dataUrl) {
 function save_image(snap) {
 	const dataUrl = snap.toDataURL('image/jpeg', 0.9);
 	sendPhotoToPC(dataUrl);
-}
-
-function swap_cam() {
-	const user = document.getElementById("viewfinder_user");
-  	const env = document.getElementById("viewfinder_environment");
-
-	if (user.style.zIndex ==2){
-		user.style.zIndex = 1;
-    	env.style.zIndex = 2;
-		Frontcam = true 
-	} else {
-		user.style.zIndex = 2;
-    	env.style.zIndex = 1;
-		Frontcam = false 
-	}
-	
-
 }
 
 // Zooming functionality

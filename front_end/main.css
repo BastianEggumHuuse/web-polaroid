@@ -39,7 +39,7 @@ body {
   top: 10px;
   left: 10px;
   z-index: 99;
-  color: white;
+  color: orchid;
   margin: 0;
 }
 
@@ -55,4 +55,3 @@ body {
   z-index: 999;
   transition: opacity 0.1s ease;
 }
-
