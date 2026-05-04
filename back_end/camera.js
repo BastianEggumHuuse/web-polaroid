@@ -54,15 +54,26 @@ async function set_camera_face(isEnvironment)
 		viewfinder.srcObject = stream;
 		viewfinder.play();
 	} catch(error) {
-		document.getElementById("header").innerHTML = 'Camera does not work';;
+		document.getElementById("header").innerHTML = 'Camera does not Work';;
 	}
 }
 
 // --- Switch camera face ---
-function swap_cam()
+let swap_lock = false;
+async function swap_cam()
 {
+	// I'm going to assume that no-one spams this button
+	if (swap_lock)
+	{
+		return;
+	}
+	swap_lock = true;
+
 	front_face = !front_face;
-	set_camera_face(front_face);
+	await set_camera_face(front_face);
+
+	swap_lock = false;
+	// End of critical section
 }
 
 // --- Trigger shutter flash ---
