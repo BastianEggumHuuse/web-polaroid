@@ -15,21 +15,25 @@ async function camera_init() {
 	let environment_constraints = {
 		audio: false,
 		video: {
-			facingMode: "environment"
+			facingMode: "environment",
+			width: {ideal:4096},
+			height: {ideal: 2160},
 		}
 	}
 
 	let user_constraints = {
 		audio: false,
 		video: {
-			facingMode: "user" // for front facing mode
+			facingMode: "user", // for front facing mode
+			width: {ideal:4096},
+			height: {ideal: 2160},
 		}
 	}
 
 	try {
 		// Get video stream from the navigator
 		environment_stream = await navigator.mediaDevices.getUserMedia(environment_constraints);
-		user_stream = await navigator.mediaDevices.getUserMedia(user_constraints);
+		//user_stream = await navigator.mediaDevices.getUserMedia(user_constraints);
 
 		// Link video stream to the viewfinder, and play stream
 		viewfinder_e.srcObject = environment_stream;
@@ -37,7 +41,7 @@ async function camera_init() {
 		viewfinder_u.srcObject = user_stream;
 		viewfinder_u.play();
 	} catch(error) {
-		document.getElementById("header").innerHTML = "Error starting camera.." + error;
+		document.getElementById("header").innerHTML = 'FUck max';;
 	}
 }
 window.onload = camera_init();
@@ -87,8 +91,8 @@ async function camera_shutter() {
 		context.drawImage(viewfinder_u,0,0,width_u,height_u);
 		save_image(snapshot_u);
 	}
-	trigger_sound()
-	trigger_flash()
+	//trigger_sound()
+	//trigger_flash()
 	
 	
 }
@@ -137,6 +141,17 @@ let zoom = 1.0;
 let zoom_min = 1.0;
 let zoom_max = 2.0;
 let zoom_step = 0.1;
+async function zoom2() {
+    const [track] = environment_stream.getVideoTracks();
+    const capabilities = track.getCapabilities();
+
+    if (capabilities.zoom) {
+		const maxZoom = capabilities.zoom.max;
+        await track.applyConstraints({ advanced: [{ zoom: maxZoom }] });
+    } else {
+        console.log("Zoom not supported on this device/browser");
+    }
+}
 
 function zoom_in(){
 	zoom = clamp(zoom_min,zoom_max,zoom + zoom_step);

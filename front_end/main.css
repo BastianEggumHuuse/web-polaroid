@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden; /* no scrolling */
-  background: black;
+  background: rgb(2, 2, 2);
 }
 
 .stage {
