@@ -54,11 +54,7 @@ async function set_camera_face(isEnvironment)
 		viewfinder.srcObject = stream;
 		viewfinder.play();
 	} catch(error) {
-<<<<<<< HEAD
 		document.getElementById("header").innerHTML = 'Camera does not Work';;
-=======
-		document.getElementById("header").innerHTML = 'Failed to load video stream';
->>>>>>> c129bc9 (a)
 	}
 }
 
