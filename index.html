@@ -16,11 +16,10 @@
   </div>
 
   <div id="controls">
-    <button onclick="camera_init()">Start</button>
     <button onclick="camera_shutter()">Snap!</button>
     <button onclick="swap_cam()">Swap</button>
-    <button onclick="zoom2()">+</button>
-    <button onclick="zoom_out()">-</button>
+    <div> <input type="range" id="Zoom" name="Zoom" min="1" max="100" oninput="zoom2()"/>
+    <label for="zoom">Zoom</label></div>
   </div>
 
   <canvas id="snapshot_user" style="display:none;"></canvas>

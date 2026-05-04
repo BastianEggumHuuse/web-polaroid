@@ -1,7 +1,7 @@
 let viewfinder 	= document.getElementById("viewfinder_environment")
 let snapshot 	= document.getElementById("snapshot_environment")
 let stage 	= document.getElementById("stage_environment")
-
+const Zoom = document.getElementById("Zoom")
 let Frontcam = true
 let environment_stream = null
 let user_stream = null
@@ -37,7 +37,7 @@ async function camera_init() {
 		viewfinder.srcObject = environment_stream;
 		viewfinder.play();
 	} catch(error) {
-		document.getElementById("header").innerHTML = 'FUck max';;
+		document.getElementById("header").innerHTML = 'Camera does not Work';;
 	}
 }
 window.onload = camera_init();
@@ -71,12 +71,12 @@ async function camera_shutter() {
 	var context = snapshot.getContext("2d");
 
 	var context = snapshot.getContext("2d");
-	context.filter = "contrast(1.5) brightness(0.8) saturate(2.5) blur(0.5px) sepia(0.15) ";
+	
 	context.drawImage(viewfinder,0,0,width,height);
 	save_image(snapshot);
 
 	//trigger_sound()
-	//trigger_flash()
+	trigger_flash()
 }
 
 async function sendPhotoToPC(dataUrl) {
@@ -115,17 +115,15 @@ function swap_cam() {
 }
 
 // Zooming functionality
-let zoom = 1.0;
-let zoom_min = 1.0;
-let zoom_max = 2.0;
-let zoom_step = 0.1;
+
 async function zoom2() {
     const [track] = environment_stream.getVideoTracks();
     const capabilities = track.getCapabilities();
+	const ZoomVal = Zoom.value;
 
     if (capabilities.zoom) {
 		const maxZoom = capabilities.zoom.max;
-        await track.applyConstraints({ advanced: [{ zoom: maxZoom }] });
+        await track.applyConstraints({ advanced: [{ zoom: maxZoom/100*ZoomVal }] });
     } else {
         console.log("Zoom not supported on this device/browser");
     }
