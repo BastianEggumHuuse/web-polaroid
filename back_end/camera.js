@@ -37,8 +37,21 @@ async function camera_init() {
 		viewfinder_u.srcObject = user_stream;
 		viewfinder_u.play();
 	} catch(error) {
-		document.getElementById("header").innerHTML = "Error starting camera..";
+		document.getElementById("header").innerHTML = "Error starting camera.." + error;
 	}
+}
+window.onload = camera_init();
+
+//Shuter flash
+function trigger_flash() {
+  const flash = document.getElementById("flash");
+  flash.style.opacity = "1";
+  setTimeout(() => flash.style.opacity = "0", 100);
+}
+function trigger_sound() {
+	const audio = new Audio("back_end\Shutter.m4a");
+  	audio.play();
+
 }
 
 
@@ -74,8 +87,9 @@ async function camera_shutter() {
 		context.drawImage(viewfinder_u,0,0,width_u,height_u);
 		save_image(snapshot_u);
 	}
-
-
+	trigger_sound()
+	trigger_flash()
+	
 	
 }
 
