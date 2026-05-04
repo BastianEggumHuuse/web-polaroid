@@ -11,7 +11,7 @@ let environment_constraints = {
 			width: {ideal:4096},
 			height: {ideal: 2160},
 		}
-	};
+	}
 
 let user_constraints = {
 		audio: false,
@@ -20,35 +20,26 @@ let user_constraints = {
 			width: {ideal:4096},
 			height: {ideal: 2160},
 		}
-	};
+	}
 
 
 // --- Camera init ---
-let camera_init = false;
+let camera_started = false;
 async function camera_init() {
-	document.getElementById("header").innerHTML = 'init';
-	return;
 
 	set_camera_face(true);
 	camera_init = true;
 }
-
-function camera_init_2()
-{
-	document.getElementById("header").innerHTML = 'init';
-}
-window.onload = camera_init_2();
+window.onload = camera_init();
 
 // --- Loading camera face ---
 async function set_camera_face(isEnvironment)
 {
 	// Removing previous stream
-	if (camera_init){
+	if (camera_started){
 		// This is a bad way of doing this I think
 		viewfinder.srcObject.getVideoTracks[0].stop();
 	}
-	
-	document.getElementById("header").innerHTML = 'starting';
 
 	try {
 		// Get video stream from the navigator
