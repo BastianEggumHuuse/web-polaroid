@@ -54,11 +54,7 @@ async function set_camera_face(isEnvironment)
 		viewfinder.srcObject = stream;
 		viewfinder.play();
 	} catch(error) {
-<<<<<<< HEAD
-		document.getElementById("header").innerHTML = 'Camera does not Work';;
-=======
-		document.getElementById("header").innerHTML = 'Failed to load video stream';
->>>>>>> c129bc9 (a)
+		document.getElementById("header").innerHTML = 'Camera does not work';;
 	}
 }
 
@@ -123,15 +119,22 @@ function save_image(snap) {
 
 // Zooming functionality
 
+let zoomPending = false;
+let zoomDirty = false;
+
 async function zoom2() {
-    const [track] = environment_stream.getVideoTracks();
+    if (zoomPending) { zoomDirty = true; return; }
+    zoomPending = true;
+    zoomDirty = false;
+
+    const [track] = viewfinder.srcObject.getVideoTracks();
     const capabilities = track.getCapabilities();
-	const ZoomVal = Zoom.value;
 
     if (capabilities.zoom) {
-		const maxZoom = capabilities.zoom.max;
-        await track.applyConstraints({ advanced: [{ zoom: maxZoom/100*ZoomVal }] });
-    } else {
-        console.log("Zoom not supported on this device/browser");
+        const maxZoom = capabilities.zoom.max;
+        await track.applyConstraints({ advanced: [{ zoom: 1 + (maxZoom - 1) / 100 * Zoom.value }] });
     }
+
+    zoomPending = false;
+    if (zoomDirty) zoom2(); // catch the last skipped value
 }
