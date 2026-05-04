@@ -1,9 +1,7 @@
-let viewfinder_e = document.getElementById("viewfinder_environment")
-let viewfinder_u = document.getElementById("viewfinder_user")
-let snapshot_e 	 = document.getElementById("snapshot_environment")
-let snapshot_u 	 = document.getElementById("snapshot_user")
-let stage_e 	 = document.getElementById("stage_environment")
-let stage_u 	 = document.getElementById("stage_user")
+let viewfinder 	= document.getElementById("viewfinder_environment")
+let snapshot 	= document.getElementById("snapshot_environment")
+let stage 	= document.getElementById("stage_environment")
+
 let Frontcam = true
 let environment_stream = null
 let user_stream = null
@@ -36,10 +34,8 @@ async function camera_init() {
 		//user_stream = await navigator.mediaDevices.getUserMedia(user_constraints);
 
 		// Link video stream to the viewfinder, and play stream
-		viewfinder_e.srcObject = environment_stream;
-		viewfinder_e.play();
-		viewfinder_u.srcObject = user_stream;
-		viewfinder_u.play();
+		viewfinder.srcObject = environment_stream;
+		viewfinder.play();
 	} catch(error) {
 		document.getElementById("header").innerHTML = 'FUck max';;
 	}
@@ -63,38 +59,24 @@ function trigger_sound() {
 async function camera_shutter() {
 	
 
-	const track_e = environment_stream.getVideoTracks()[0];
-	const track_u = user_stream.getVideoTracks()[0];
+	const track = environment_stream.getVideoTracks()[0];
 
 
 
-	const {width: width_u, height:height_u } = track_u.getSettings();
-	snapshot_u.width = width_u;
-	snapshot_u.height = height_u;
-	
-	const { width:width_e, height:height_e } = track_e.getSettings();
-	snapshot_e.width = width_e;
-	snapshot_e.height = height_e;
-
+	const {width: width, height:height } = track.getSettings();
+	snapshot.width = width;
+	snapshot.height = height;
 
 	// Draw the image currently in the viewfinder onto the canvas
-	var context = snapshot_e.getContext("2d");
+	var context = snapshot.getContext("2d");
 
-	if (Frontcam == true) {
-		var context = snapshot_e.getContext("2d");
-		context.filter = "contrast(1.5) brightness(0.8) saturate(2.5) blur(0.5px) sepia(0.15) ";
-		context.drawImage(viewfinder_e,0,0,width_e,height_e);
-		save_image(snapshot_e);
-	} else {
-		var context = snapshot_u.getContext("2d");
-		context.filter = "contrast(1.5) brightness(0.8) saturate(2.5) blur(0.5px) sepia(0.15)";
-		context.drawImage(viewfinder_u,0,0,width_u,height_u);
-		save_image(snapshot_u);
-	}
+	var context = snapshot.getContext("2d");
+	context.filter = "contrast(1.5) brightness(0.8) saturate(2.5) blur(0.5px) sepia(0.15) ";
+	context.drawImage(viewfinder,0,0,width,height);
+	save_image(snapshot);
+
 	//trigger_sound()
 	//trigger_flash()
-	
-	
 }
 
 async function sendPhotoToPC(dataUrl) {
@@ -110,14 +92,10 @@ async function sendPhotoToPC(dataUrl) {
   if (result.ok) alert(`Saved: ${result.filename}`);
 }
 
-
 function save_image(snap) {
 	const dataUrl = snap.toDataURL('image/jpeg', 0.9);
 	sendPhotoToPC(dataUrl);
 }
-
-//swaping camera
-
 
 function swap_cam() {
 	const user = document.getElementById("viewfinder_user");
@@ -180,7 +158,7 @@ function update_zoom()
 	}*/
 
 	// Actually applying zoom
-	viewfinder_e.style[prop] = "scale("+zoom+")";
+	viewfinder.style[prop] = "scale("+zoom+")";
 }
 
 // Other functions
