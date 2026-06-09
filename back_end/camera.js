@@ -13,28 +13,38 @@ function site_init(){
 	document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";
 	// Show intro block
 }
-
+// Initializing num photos
 let Num_Fotos = document.cookie.split(';')[0].substring(document.cookie.split(";")[0].length - 1);
 document.getElementById("count").innerHTML = 'Gjenverende Bilder: '+Num_Fotos;
 
+// Defining constraints
 let environment_constraints = {
-		audio: false,
-		video: {
-			facingMode: "environment",
-			width: {ideal:4096},
-			height: {ideal: 2160},
-		}
+	audio: false,
+	video: {
+		facingMode: "environment",
+		width: {ideal:4096},
+		height: {ideal: 2160},
 	}
+}
 
 let user_constraints = {
-		audio: false,
-		video: {
-			facingMode: "user", // for front facing mode
-			width: {ideal:4096},
-			height: {ideal: 2160},
-		}
+	audio: false,
+	video: {
+		facingMode: "user", // for front facing mode
+		width: {ideal:4096},
+		height: {ideal: 2160},
 	}
+}
 
+// Loading icon functions
+function disk_icon_up()
+{
+
+}
+function disk_icon_down()
+{
+
+}
 
 // --- Camera init ---
 let camera_started = false;
@@ -133,7 +143,7 @@ async function camera_shutter() {
 	// Trigger flash, draw image
 	trigger_flash()
 	context.filter = active_filter
-	context.drawImage(viewfinder,0,0,width,height);
+	context.drawImage(viewfinder,(flip ? img.width * -1 : 0),0,width,height);
 	// Purposfully not awaiting this function so it doesn't lag
 	save_image(snapshot);
 
