@@ -161,7 +161,6 @@ function trigger_flash() {
 function trigger_sound() {
 	const audio = new Audio("back_end\Shutter.m4a");
   	audio.play();
-
 }
 
 
@@ -185,9 +184,11 @@ async function camera_shutter() {
 	const {width: width, height:height } = track.getSettings();
 	snapshot.width = width;
 	snapshot.height = height;
-	// Draw the image currently in the viewfinder onto the canvas
+	// Get canvas context
 	var context = snapshot.getContext("2d");
-	
+	if(front_face) {context.scale(-1,1);}
+	else {context.scale(1,1);}
+	// Trigger flash, draw image
 	trigger_flash()
 	context.filter = active_filter
 	context.drawImage(viewfinder,0,0,width,height);
