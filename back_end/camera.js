@@ -3,7 +3,7 @@ let snapshot 	= document.getElementById("snapshot_environment")
 let stage 	= document.getElementById("stage_environment")
 let front_face 	= false
 
-let active_filter = "contrast(2) saturate(1.8) sepia(0.60) brightness(1.1)";
+let active_filter = "contrast(1.4) saturate(2.5) sepia(0.60) brightness(1.1)";
 
 const Zoom = document.getElementById("Zoom")
 // Initializing the site
@@ -34,6 +34,91 @@ let user_constraints = {
 			height: {ideal: 2160},
 		}
 	}
+
+
+//Creating filter (idk):
+// --- Film grain tile (built once) ---
+const grain_tile = document.createElement("canvas");
+grain_tile.width = grain_tile.height = 128;
+(function () {
+  const g = grain_tile.getContext("2d");
+  const img = g.createImageData(128, 128);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const v = Math.random() * 255;
+    img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+    img.data[i + 3] = 255;
+  }
+  g.putImageData(img, 0, 0);
+})();
+
+// --- Real film effects, drawn on top of the photo ---
+function apply_film_look(ctx, w, h) {
+  ctx.filter = "none"; // so these layers aren't re-filtered
+
+  // lifted, warm shadows (film blacks are never pure black)
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  ctx.globalAlpha = 0.07;
+  ctx.fillStyle = "#4a2f12";
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+
+  // warm highlight cast
+  ctx.save();
+  ctx.globalCompositeOperation = "soft-light";
+  ctx.globalAlpha = 0.4;
+  ctx.fillStyle = "#ffb066";
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+
+  // vignette
+  ctx.save();
+  const r = Math.max(w, h) * 0.75;
+  const grad = ctx.createRadialGradient(w/2, h/2, r*0.4, w/2, h/2, r);
+  grad.addColorStop(0, "rgba(0,0,0,0)");
+  grad.addColorStop(1, "rgba(0,0,0,0.55)");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+
+  // grain
+  ctx.save();
+  ctx.globalCompositeOperation = "overlay";
+  ctx.globalAlpha = 0.45;
+  const pattern = ctx.createPattern(grain_tile, "repeat");
+  const m = new DOMMatrix();
+  m.a = m.d = 2.5; // bigger = chunkier grain
+  pattern.setTransform(m);
+  ctx.fillStyle = pattern;
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+}
+function install_preview_overlay() {
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "position:relative; display:inline-block; line-height:0;";
+  viewfinder.parentElement.insertBefore(wrap, viewfinder);
+  wrap.appendChild(viewfinder);
+
+  const vig = document.createElement("div");
+  vig.style.cssText = `position:absolute; inset:0; pointer-events:none; z-index:2;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5) 100%);`;
+
+  const grain = document.createElement("div");
+  grain.style.cssText = `position:absolute; inset:0; pointer-events:none; z-index:3;
+    opacity:0.2; mix-blend-mode:overlay; background-size:180px 180px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:film_grain .5s steps(1) infinite;`;
+
+  const kf = document.createElement("style");
+  kf.textContent = `@keyframes film_grain{
+    0%{background-position:0 0} 25%{background-position:-50px 30px}
+    50%{background-position:40px -40px} 75%{background-position:-30px 50px}
+    100%{background-position:50px 20px}}`;
+  document.head.appendChild(kf);
+
+  wrap.appendChild(vig);
+  wrap.appendChild(grain);
+}
 
 
 // --- Camera init ---
@@ -133,6 +218,7 @@ async function camera_shutter() {
 	trigger_flash()
 	context.filter = active_filter
 	context.drawImage(viewfinder,0,0,width,height);
+	apply_film_look(context, width, height);
 	// Purposfully not awaiting this function so it doesn't lag
 	save_image(snapshot);
 
