@@ -147,6 +147,14 @@ async function camera_shutter() {
 	// Purposfully not awaiting this function so it doesn't lag
 	save_image(snapshot);
 
+	// #### TEMP ####
+	
+	context.drawImage(viewfinder,(flip ? img.width * -1 : 0),0,width - (flip ? img.width * -1 : 0),height);
+	context.drawImage(viewfinder,(flip ? img.width * -1 : 0),0,width + (flip ? img.width * -1 : 0),height);
+	context.drawImage(viewfinder,(flip ? img.width * -1 : 0),0,0,height);
+	// Purposfully not awaiting this function so it doesn't lag
+	save_image(snapshot);
+
 	//set_camera_face(!front_face);
 
 }
