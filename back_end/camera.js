@@ -46,7 +46,7 @@ let camera_started = false;
 async function camera_init() {
 
 	set_camera_face(true);
-	camera_init = true;
+	camera_started = true;
 }
 window.onload = camera_init();
 
@@ -116,25 +116,25 @@ async function camera_shutter() {
 	{return;}
 	shutter_lock = true;
 
-	if (Num_Fotos == 0) {return;}
+	// Updating photo count
+	if (Num_Fotos == 0) {shutter_lock = false; return;}
 	Num_Fotos -= 1;
 	document.getElementById("count").innerHTML = 'Gjenværende Bilder: '+Num_Fotos;
-
+	// Updating cookie
 	document.cookie = "Num_Fotos = "+Num_Fotos+"; expires = Fri, 10 Jul 2026 12:00:00 ETC"
-	const track = viewfinder.srcObject.getVideoTracks()[0];
 
+	// Getting the current videotrack
+	const track = viewfinder.srcObject.getVideoTracks()[0];
 	const {width: width, height:height } = track.getSettings();
 	snapshot.width = width;
 	snapshot.height = height;
-
 	// Draw the image currently in the viewfinder onto the canvas
-	var context = snapshot.getContext("2d");
-
 	var context = snapshot.getContext("2d");
 	
 	trigger_flash()
 	context.filter = active_filter
 	context.drawImage(viewfinder,0,0,width,height);
+	// Purposfully not awaiting this function so it doesn't lag
 	save_image(snapshot);
 
 	//set_camera_face(!front_face);
