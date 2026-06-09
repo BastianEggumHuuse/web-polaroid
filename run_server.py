@@ -1,7 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler, SimpleHTTPRequestHandler
 import json, base64, os, time
 
-SAVE_DIR = "./received_photos"
+SAVE_DIR = "./received_photos2"
 PORT = 443
 
 os.makedirs(SAVE_DIR, exist_ok=True)

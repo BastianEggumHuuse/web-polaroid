@@ -111,8 +111,47 @@ function trigger_flash() {
   setTimeout(() => flash.style.opacity = "0", 100);
 }
 function trigger_sound() {
-	const audio = new Audio("back_end\Shutter.m4a");
+	const audio = new Audio("back_end/Shutter.m4a");
   	audio.play();
+}
+
+// --- Analog film look (applies to the saved canvas) ---
+function apply_film_look(canvas) {
+	const ctx = canvas.getContext("2d");
+	const { width, height } = canvas;
+	const img = ctx.getImageData(0, 0, width, height);
+	const d = img.data;
+
+	const cx = width / 2, cy = height / 2;
+	const maxDist = Math.hypot(cx, cy);
+	const grainAmount = 18;   // higher = grainier
+	const vignette    = 1; // 0 = none, 1 = strong dark corners
+
+	for (let i = 0; i < d.length; i += 4) {
+		let r = d[i], g = d[i + 1], b = d[i + 2];
+
+		// Warm grade + lifted ("milky") shadows
+		r = r * 0.92 + 26;
+		g = g * 0.92 + 18;
+		b = b * 0.86 + 12;
+
+		// Film grain
+		const noise = (Math.random() - 0.5) * grainAmount;
+		r += noise; g += noise; b += noise;
+
+		// Vignette based on distance from centre
+		const px = (i / 4) % width;
+		const py = (i / 4 / width) | 0;
+		const dist = Math.hypot(px - cx, py - cy) / maxDist;
+		const v = 1 - vignette * dist * dist;
+		r *= v; g *= v; b *= v;
+
+		d[i]     = r < 0 ? 0 : r > 255 ? 255 : r;
+		d[i + 1] = g < 0 ? 0 : g > 255 ? 255 : g;
+		d[i + 2] = b < 0 ? 0 : b > 255 ? 255 : b;
+	}
+
+	ctx.putImageData(img, 0, 0);
 }
 
 
@@ -141,9 +180,9 @@ async function camera_shutter() {
 	// Trigger flash, draw image
 	trigger_flash()
 	context.filter = active_filter
-	if(false) {context.drawImage(viewfinder,width,height,0,0);}
-	else {context.drawImage(viewfinder,0,0,width,height);}
+	context.drawImage(viewfinder,0,0,width,height);
 	// Purposfully not awaiting this function so it doesn't lag
+	apply_film_look(snapshot);
 	save_image(snapshot);
 
 	//set_camera_face(!front_face);
