@@ -3,14 +3,13 @@ let snapshot 	= document.getElementById("snapshot_environment")
 let stage 	= document.getElementById("stage_environment")
 let front_face 	= false
 
-let active_filter = "contrast(1.4) saturate(1.8) sepia(0.5) brightness(1.1)";
+let active_filter = "contrast(2) saturate(1.8) sepia(0.60) brightness(1.1)";
 
 const Zoom = document.getElementById("Zoom")
 // Initializing the site
-if (true){await site_init();}
-if (document.cookie == ""){await site_init();}
-async function site_init() {
->>>>>>> befc44a (Trying a new fix)
+if (true){site_init();}
+if (document.cookie == ""){site_init();}
+function site_init(){
 	document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";
 	// Show intro block
 }
@@ -119,7 +118,7 @@ async function camera_shutter() {
 	// Updating photo count
 	if (Num_Fotos == 0) {shutter_lock = false; return;}
 	Num_Fotos -= 1;
-	document.getElementById("count").innerHTML = 'Gjenværende Bilder: '+Num_Fotos;
+	document.getElementById("count").innerHTML = 'Gjenverende Bilder: '+Num_Fotos;
 	// Updating cookie
 	document.cookie = "Num_Fotos = "+Num_Fotos+"; expires = Fri, 10 Jul 2026 12:00:00 ETC"
 
