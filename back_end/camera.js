@@ -2,7 +2,13 @@ let viewfinder 	= document.getElementById("viewfinder_environment")
 let snapshot 	= document.getElementById("snapshot_environment")
 let stage 	= document.getElementById("stage_environment")
 let front_face 	= false
+
+let active_filter = "brightness(1.1) contrast(1.15) saturate(1.3) sepia(0.2) hue-rotate(-10deg) invert(0) blur(0px)";
+
+
+
 const Zoom = document.getElementById("Zoom")
+
 
 
 if (true){document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";
@@ -68,6 +74,7 @@ async function set_camera_face(isEnvironment)
 	} catch(error) {
 		document.getElementById("header").innerHTML = 'Camera does not Work';
 	}
+	viewfinder.style.filter = active_filter
 }
 
 // --- Switch camera face ---
@@ -126,7 +133,7 @@ async function camera_shutter() {
 	var context = snapshot.getContext("2d");
 	
 	trigger_flash()
-	
+	context.filter = active_filter
 	context.drawImage(viewfinder,0,0,width,height);
 	save_image(snapshot);
 
