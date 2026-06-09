@@ -93,38 +93,11 @@ function apply_film_look(ctx, w, h) {
   ctx.fillRect(0, 0, w, h);
   ctx.restore();
 }
-function install_preview_overlay() {
-  const wrap = document.createElement("div");
-  wrap.style.cssText = "position:relative; display:inline-block; line-height:0;";
-  viewfinder.parentElement.insertBefore(wrap, viewfinder);
-  wrap.appendChild(viewfinder);
-
-  const vig = document.createElement("div");
-  vig.style.cssText = `position:absolute; inset:0; pointer-events:none; z-index:2;
-    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5) 100%);`;
-
-  const grain = document.createElement("div");
-  grain.style.cssText = `position:absolute; inset:0; pointer-events:none; z-index:3;
-    opacity:0.2; mix-blend-mode:overlay; background-size:180px 180px;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation:film_grain .5s steps(1) infinite;`;
-
-  const kf = document.createElement("style");
-  kf.textContent = `@keyframes film_grain{
-    0%{background-position:0 0} 25%{background-position:-50px 30px}
-    50%{background-position:40px -40px} 75%{background-position:-30px 50px}
-    100%{background-position:50px 20px}}`;
-  document.head.appendChild(kf);
-
-  wrap.appendChild(vig);
-  wrap.appendChild(grain);
-}
-
 
 // --- Camera init ---
 let camera_started = false;
 async function camera_init() {
-
+	install_preview_overlay()
 	set_camera_face(true);
 	camera_started = true;
 }
