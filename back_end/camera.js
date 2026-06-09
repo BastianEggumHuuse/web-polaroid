@@ -4,6 +4,13 @@ let stage 	= document.getElementById("stage_environment")
 let front_face 	= false
 const Zoom = document.getElementById("Zoom")
 
+if (false){document.cookie = "";}
+
+if (document.cookie == ""){
+	document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";}
+let Num_Fotos = document.cookie.split(';')[0].substring(document.cookie.split(";")[0].length - 1);
+document.getElementById("count").innerHTML = 'Gjenverende Bilder: '+Num_Fotos;
+
 let environment_constraints = {
 		audio: false,
 		video: {
@@ -54,7 +61,7 @@ async function set_camera_face(isEnvironment)
 		viewfinder.srcObject = stream;
 		viewfinder.play();
 	} catch(error) {
-		document.getElementById("header").innerHTML = 'Camera does not Work';;
+		document.getElementById("header").innerHTML = 'Camera does not Work';
 	}
 }
 
@@ -70,7 +77,7 @@ async function swap_cam()
 	swap_lock = true;
 
 	front_face = !front_face;
-	await set_camera_face(front_face);
+	await set_camera_face(!front_face);
 
 	swap_lock = false;
 	// End of critical section
@@ -90,8 +97,18 @@ function trigger_sound() {
 
 
 // Shutter and saving functionality
+let shutter_lock = false;
 async function camera_shutter() {
-	
+
+	if(shutter_lock)
+	{return;}
+	shutter_lock = true;
+
+	if (Num_Fotos == 0) {return;}
+	Num_Fotos -= 1;
+	document.getElementById("count").innerHTML = 'Gjenværende Bilder: '+Num_Fotos;
+
+	document.cookie = "Num_Fotos = "+Num_Fotos+"; expires = Fri, 10 Jul 2026 12:00:00 ETC"
 	const track = viewfinder.srcObject.getVideoTracks()[0];
 
 	const {width: width, height:height } = track.getSettings();
@@ -103,11 +120,14 @@ async function camera_shutter() {
 
 	var context = snapshot.getContext("2d");
 	
-	context.drawImage(viewfinder,0,0,width,height);
-	save_image(snapshot);
-
-	//trigger_sound()
 	trigger_flash()
+	
+	context.drawImage(viewfinder,0,0,width,height);
+	await save_image(snapshot);
+
+	set_camera_face(!front_face);
+
+	shutter_lock = false;
 }
 
 async function sendPhotoToPC(dataUrl) {
@@ -123,9 +143,9 @@ async function sendPhotoToPC(dataUrl) {
   if (result.ok) alert(`Saved: ${result.filename}`);
 }
 
-function save_image(snap) {
+async function save_image(snap) {
 	const dataUrl = snap.toDataURL('image/jpeg', 0.9);
-	sendPhotoToPC(dataUrl);
+	await sendPhotoToPC(dataUrl);
 }
 
 // Zooming functionality
