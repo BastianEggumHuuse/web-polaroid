@@ -141,7 +141,7 @@ async function camera_shutter() {
 	// Trigger flash, draw image
 	trigger_flash()
 	context.filter = active_filter
-	if(front_face) {context.drawImage(viewfinder,width,height,0,0);}
+	if(false) {context.drawImage(viewfinder,width,height,0,0);}
 	else {context.drawImage(viewfinder,0,0,width,height);}
 	// Purposfully not awaiting this function so it doesn't lag
 	save_image(snapshot);
