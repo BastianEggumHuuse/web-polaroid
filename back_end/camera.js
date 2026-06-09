@@ -3,7 +3,7 @@ let snapshot 	= document.getElementById("snapshot_environment")
 let stage 	= document.getElementById("stage_environment")
 let front_face 	= false
 
-let active_filter = "contrast(1.4) saturate(10) sepia(0.5) brightness(1.1)";
+let active_filter = "contrast(1.5) saturate(2.5) sepia(0.5) brightness(0.9)";
 
 const Zoom = document.getElementById("Zoom")
 // Initializing the site
