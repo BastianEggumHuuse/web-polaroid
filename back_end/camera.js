@@ -6,16 +6,14 @@ let front_face 	= false
 let active_filter = "contrast(1.4) saturate(1.8) sepia(0.5) brightness(1.1)";
 
 const Zoom = document.getElementById("Zoom")
-
-
-
-if (true){document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";
-}
-
-if (document.cookie == ""){
-	document.getElementById("header").innerHTML = 'ehhaefeojfa'
+// Initializing the site
+if (true){await site_init();}
+if (document.cookie == ""){await site_init();}
+async function site_init() {
+>>>>>>> befc44a (Trying a new fix)
 	document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";
-	}
+	// Show intro block
+}
 
 let Num_Fotos = document.cookie.split(';')[0].substring(document.cookie.split(";")[0].length - 1);
 document.getElementById("count").innerHTML = 'Gjenverende Bilder: '+Num_Fotos;
@@ -53,8 +51,12 @@ async function set_camera_face(isEnvironment)
 {
 	// Removing previous stream
 	if (camera_started){
+		const tracks = viewfinder.srcObject.getTracks();
+		tracks.forEach((track) => {
+			track.stop();
+		});
 		// This is a bad way of doing this I think
-		viewfinder.srcObject.getVideoTracks[0].stop();
+		//viewfinder.srcObject.getVideoTracks[0].stop();
 	}
 
 	try {
