@@ -138,20 +138,11 @@ async function camera_shutter() {
 	snapshot.height = height;
 	// Get canvas context
 	var context = snapshot.getContext("2d");
-	if(front_face) {context.scale(-1,1);}
-	else {context.scale(1,1);}
 	// Trigger flash, draw image
 	trigger_flash()
 	context.filter = active_filter
-	context.drawImage(viewfinder,(flip ? img.width * -1 : 0),0,width,height);
-	// Purposfully not awaiting this function so it doesn't lag
-	save_image(snapshot);
-
-	// #### TEMP ####
-	
-	context.drawImage(viewfinder,(flip ? img.width * -1 : 0),0,width - (flip ? img.width * -1 : 0),height);
-	context.drawImage(viewfinder,(flip ? img.width * -1 : 0),0,width + (flip ? img.width * -1 : 0),height);
-	context.drawImage(viewfinder,(flip ? img.width * -1 : 0),0,0,height);
+	if(front_face) {context.drawImage(viewfinder,width,height,0,0);}
+	else {context.drawImage(viewfinder,0,0,width,height);}
 	// Purposfully not awaiting this function so it doesn't lag
 	save_image(snapshot);
 
