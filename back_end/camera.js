@@ -128,11 +128,10 @@ async function camera_shutter() {
 	trigger_flash()
 	
 	context.drawImage(viewfinder,0,0,width,height);
-	await save_image(snapshot);
+	save_image(snapshot);
 
-	set_camera_face(!front_face);
+	//set_camera_face(!front_face);
 
-	shutter_lock = false;
 }
 
 async function sendPhotoToPC(dataUrl) {
@@ -151,10 +150,11 @@ async function sendPhotoToPC(dataUrl) {
 async function save_image(snap) {
 	const dataUrl = snap.toDataURL('image/jpeg', 0.9);
 	await sendPhotoToPC(dataUrl);
+
+	shutter_lock = false;
 }
 
 // Zooming functionality
-
 let zoomPending = false;
 let zoomDirty = false;
 
