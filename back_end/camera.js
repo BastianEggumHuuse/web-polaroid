@@ -4,10 +4,15 @@ let stage 	= document.getElementById("stage_environment")
 let front_face 	= false
 const Zoom = document.getElementById("Zoom")
 
-if (false){document.cookie = "";}
+
+if (true){document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";
+}
 
 if (document.cookie == ""){
-	document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";}
+	document.getElementById("header").innerHTML = 'ehhaefeojfa'
+	document.cookie = "Num_Fotos = 5; expires = Fri, 10 Jul 2026 12:00:00 ETC";
+	}
+
 let Num_Fotos = document.cookie.split(';')[0].substring(document.cookie.split(";")[0].length - 1);
 document.getElementById("count").innerHTML = 'Gjenverende Bilder: '+Num_Fotos;
 
