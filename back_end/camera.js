@@ -144,8 +144,8 @@ async function sendPhotoToPC(dataUrl) {
     body: JSON.stringify({ image: dataUrl })
   });
 
-  const result = await res.json();
-  if (result.ok) alert(`Saved: ${result.filename}`);
+  //const result = await res.json();
+  //if (result.ok) alert(`Saved: ${result.filename}`);
 }
 
 async function save_image(snap) {
