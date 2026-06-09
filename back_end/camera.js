@@ -54,8 +54,6 @@ async function set_camera_face(isEnvironment)
 		tracks.forEach((track) => {
 			track.stop();
 		});
-		// This is a bad way of doing this I think
-		//viewfinder.srcObject.getVideoTracks[0].stop();
 	}
 
 	try {
@@ -63,8 +61,10 @@ async function set_camera_face(isEnvironment)
 		let stream = null;
 		if(isEnvironment){
 			stream = await navigator.mediaDevices.getUserMedia(environment_constraints);
+			viewfinder.style.transform = "scaleX(1)";
 		} else {
 			stream = await navigator.mediaDevices.getUserMedia(user_constraints);
+			viewfinder.style.transform = "scaleX(-1)";
 		}
 
 		// Link video stream to the viewfinder, and play stream
